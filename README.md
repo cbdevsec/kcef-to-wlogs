@@ -14,7 +14,7 @@ pip install -r requirements.txt
 ```
 
 ## Fichier .env:
-copier le fichier .env.example et changes les valeurs des variables (.env doit rester dans le .gitignore sinn catastrophe de secu)
+copier le fichier .env.example et changer les valeurs des variables (.env doit rester dans le .gitignore sinn catastrophe de sécu)
 
 ## Guide d'utilisation:
 |Flag|Utilisation|
@@ -39,7 +39,7 @@ python kaspersky_to_wazuh.py --input ksc_export.cef --out alerts.ndjson
 python kaspersky_to_wazuh.py --input ksc_export.cef --push
 ```
 
-## Verification:
+## Vérification:
 ```json
 GET wazuh-alerts-4.x-*/_count
 { "query": { "match": { "location": "kaspersky-ksc" } } }
