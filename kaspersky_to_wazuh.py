@@ -7,9 +7,13 @@ Usage:
   python kaspersky_to_wazuh.py --input ksc_export.cef --out alerts.ndjson   
   python kaspersky_to_wazuh.py --simulate 500 --push --host https://localhost:9200 --user admin --password 'xxx'      
 """
+import os
 import argparse, json, random, re, sys, uuid
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
+from dotenv import load_dotenv 
+load_dotenv()
+
 
 # Simulation
 EVENTS = [
@@ -183,8 +187,8 @@ def main():
     ap.add_argument("--input"); ap.add_argument("--simulate", type=int)
     ap.add_argument("--out", default="wazuh_alerts.ndjson")
     ap.add_argument("--push", action="store_true")
-    ap.add_argument("--host", default="https://localhost:9200")
-    ap.add_argument("--user", default="admin"); ap.add_argument("--password", default="admin")
+    ap.add_argument("--host", default=os.getenv("WAZUH_HOST", "https://localhost:9200"))
+    ap.add_argument("--user", default=os.getenv("WAZUH_USER", "admin")); ap.add_argument("--password", default=os.getenv("WAZUH_PASSWORD", "SecretPassword"))  #prq SecretPassword psq c le mdp par default de docker wazuh single node installation
     ap.add_argument("--verify-tls", action="store_true")
     a = ap.parse_args()
 
@@ -207,6 +211,9 @@ def main():
         f.write("\n".join(bulk_lines(docs)) + "\n")
     print(f"Wrote bulk file: {a.out}")
     print("Sample doc:\n", json.dumps(docs[0][0], indent=2))
+
+    if a.push and not a.password:
+        ap.error("No password: set WAZUH_PASSWORD in .env or pass --password")
 
     if a.push:
         push(docs, a.host, a.user, a.password, a.verify_tls)
