@@ -1,5 +1,5 @@
 # Kaspersky_to_Wazuh.py 
-petit script pythonn qui convertit les logs Kaspersky format CEF au format des logs wazuh.
+petit script python qui convertit les logs Kaspersky format CEF au format des logs wazuh.
 
 ## fonctionnement:
 Lit les lignes CEF
@@ -46,4 +46,4 @@ GET wazuh-alerts-4.x-*/_count
 ```
 
 ## Pourquoi NDJSON?
-L'API _bulk veut une ligne d'action + une ligne de document, chacune sur sa propre ligne. Pas de tableau JSON, and le fichier doit finir par un retour à la ligne, sinon ça plante.
+L'API _bulk veut une ligne d'action + une ligne de document, chacune sur sa propre ligne. Pas de tableau JSON, et le fichier doit finir par un retour à la ligne, sinon ça plante.
